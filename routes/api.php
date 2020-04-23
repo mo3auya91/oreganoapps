@@ -14,23 +14,24 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::domain('{type}.' . env('APP_URL'))->group(function () {
-    Route::get('/', function ($type) {
-        $type = \App\Models\Type::query()->where('slug', $type)->firstOrFail();
+//Route::domain('{type}.' . env('APP_URL'))->group(function () {
+Route::prefix('v1/')->group(function () {
+    $type_slug = \request()->header('type');
+    $type = \App\Models\Type::query()->where('slug', $type_slug)->firstOrFail();
+    Route::get('/', function () use ($type) {
         $images = \App\Models\Image::with('category')->whereHas('category', function ($query) use ($type) {
+            $query->where('status', 1);
             $query->where('type_id', $type->id);
         })->orderByDesc('id')->paginate(10);
         return api_response($images, 'تمت العملية بنجاح', null);
     });
 
-    Route::get('/categories', function ($type) {
-        $type = \App\Models\Type::query()->where('slug', $type)->firstOrFail();
+    Route::get('/categories', function () use ($type) {
         $categories = \App\Models\Category::query()->where('type_id', $type->id)->get();
         return api_response($categories, 'تمت العملية بنجاح', null);
     });
 
-    Route::get('/categories/{category_id}/images', function ($type, $category_id) {
-        $type = \App\Models\Type::query()->where('slug', $type)->firstOrFail();
+    Route::get('/categories/{category_id}/images', function ($category_id) use ($type) {
         $category = $type->categories()->findOrFail($category_id);
         $images = $category->images()->paginate(10);
         return api_response($images, 'تمت العملية بنجاح', null);
