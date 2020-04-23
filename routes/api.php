@@ -14,10 +14,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-//Route::domain('{type}.' . env('APP_URL'))->group(function () {
 Route::prefix('v1/')->group(function () {
-    $type_slug = \request()->header('type');
-    $type = \App\Models\Type::query()->where('slug', $type_slug)->firstOrFail();
+    $type_slug = request()->header('type');
+    $type = \App\Models\Type::query()->where('slug', $type_slug)->first();
+    if (!$type_slug) {
+        $type = \App\Models\Type::query()->firstOrFail();
+    }
     Route::get('/', function () use ($type) {
         $images = \App\Models\Image::with('category')->whereHas('category', function ($query) use ($type) {
             $query->where('status', 1);
