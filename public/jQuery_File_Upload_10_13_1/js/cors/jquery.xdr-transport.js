@@ -54,14 +54,18 @@
             }
             xdr = new XDomainRequest();
             // XDomainRequest only supports GET and POST:
+            // if (s.type === 'POST') {
+            //   s.url = s.url + addParamChar + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
+            //   s.type = 'POST';
+            // }
             if (s.type === 'DELETE') {
-              s.url = s.url + addParamChar + '_method=DELETE';
+              s.url = s.url + addParamChar + '_method=DELETE' + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
               s.type = 'POST';
             } else if (s.type === 'PUT') {
-              s.url = s.url + addParamChar + '_method=PUT';
+              s.url = s.url + addParamChar + '_method=PUT' + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
               s.type = 'POST';
             } else if (s.type === 'PATCH') {
-              s.url = s.url + addParamChar + '_method=PATCH';
+              s.url = s.url + addParamChar + '_method=PATCH' + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
               s.type = 'POST';
             }
             xdr.open(s.type, s.url);

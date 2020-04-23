@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Admin\UploadController;
 use App\Models\Category;
 use App\Models\Image;
 use Illuminate\Http\JsonResponse;
@@ -33,7 +34,7 @@ class ImagesController extends Controller
      */
     public function create(Category $category): View
     {
-        return view('admin.images.create', ['category' => $category]);
+        return view('admin.images._create', ['category' => $category]);
     }
 
     /**
@@ -43,24 +44,31 @@ class ImagesController extends Controller
      * @return RedirectResponse
      * @throws ValidationException
      */
-    public function store(Request $request, Category $category): RedirectResponse
+    public function store(Request $request, Category $category)//: RedirectResponse
     {
-        $this->validate($request, [
-            'images' => ['required', 'array'],
-            'images.*' => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
-        ]);
-        $now = now();
-        $items = [];
-        foreach ($request->file('images') as $image) {
-            array_push($items, [
-                'category_id' => $category->id,
-                'image' => str_replace('public/', 'storage/', $image->store('public/categories/' . $category->id . '/images')),
-                'created_at' => $now,
-                'updated_at' => $now,
-            ]);
+        try {
+            error_reporting(E_ALL | E_STRICT);
+            new UploadController($category->id);
+        } catch (\Exception $e) {
+            return redirect()->back()->withErrors('errors', [$e->getMessage()]);
         }
-        $category->images()->insert($items);
-        return back()->with('success', 'Created successfully');
+//        $this->validate($request, [
+//            'files' => ['required', 'array'],
+//            'files.*' => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
+//        ]);
+//        $now = now();
+//        $items = [];
+//        foreach ($request->file('files') as $image) {
+//            array_push($items, [
+//                'category_id' => $category->id,
+//                'image' => str_replace('public/', 'storage/', $image->store('public/categories/' . $category->id . '/images')),
+//                'created_at' => $now,
+//                'updated_at' => $now,
+//            ]);
+//        }
+//        $category->images()->insert($items);
+//        return api_response([], 'Created successfully', null);
+        //return back()->with('success', 'Created successfully');
     }
 
     /**

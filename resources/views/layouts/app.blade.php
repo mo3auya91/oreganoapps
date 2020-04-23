@@ -9,19 +9,19 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    {{--    @if(request()->route()->getName() !== 'categories.images.create')--}}
-    {{--    Scripts--}}
-    <script src="{{ asset('js/app.js') }}" defer></script>
-    {{--    @endif--}}
+    @if(request()->route()->getName() !== 'categories.images.create')
+        {{--    Scripts--}}
+        <script src="{{ asset('js/app.js') }}" defer></script>
+    @endif
 
     {{--    Fonts--}}
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
 
-    {{--    @if(request()->route()->getName() !== 'categories.images.create')--}}
-    {{--     Styles --}}
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
-    {{--    @endif--}}
+    @if(request()->route()->getName() !== 'categories.images.create')
+        {{--     Styles --}}
+        <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    @endif
     @yield('css')
 </head>
 <body>

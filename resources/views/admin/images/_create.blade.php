@@ -1,8 +1,9 @@
 @extends('layouts.app')
 
 @section('css')
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-{{--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">--}}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    {{--    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">--}}
     <!-- blueimp Gallery styles -->
     <link rel="stylesheet" href="//blueimp.github.io/Gallery/css/blueimp-gallery.min.css">
     <!-- CSS to style the file input field as button and adjust the Bootstrap progress bars -->
@@ -15,6 +16,11 @@
     <noscript>
         <link rel="stylesheet" href="{{url('jQuery_File_Upload_10_13_1/css/jquery.fileupload-ui-noscript.css')}}">
     </noscript>
+    <style>
+        .fade.in {
+            opacity: 1
+        }
+    </style>
 @endsection
 @section('content')
     <div class="container">
@@ -32,12 +38,12 @@
                                         <div class="box box-primary">
                                             <form id="fileupload" method="POST" enctype="multipart/form-data"
                                                   action="{{route('categories.images.store',['category'=>$category->id])}}">
-                                            @csrf
-                                            {{--                                                <noscript>--}}
-                                            {{--                                                    <input type="hidden" name="redirect"--}}
-                                            {{--                                                           value="https://blueimp.github.io/jQuery-File-Upload/">--}}
-                                            {{--                                                </noscript>--}}
-                                            <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
+                                                @csrf
+                                                <noscript>
+                                                    <input type="hidden" name="redirect"
+                                                           value="https://blueimp.github.io/jQuery-File-Upload/">
+                                                </noscript>
+                                                <!-- The fileupload-buttonbar contains buttons to add/delete files and start/cancel the upload -->
                                                 <div class="row fileupload-buttonbar">
                                                     <div class="col-lg-7">
                                                         <!-- The fileinput-button span is used to style the file input field as button -->
@@ -49,18 +55,18 @@
                                                         </span>
                                                         <button type="submit" class="btn btn-primary start">
                                                             <i class="glyphicon glyphicon-upload"></i>
-                                                            <span>{{__('jquery_upload.start_upload')}}</span>
+                                                            <span>{{__('Start upload')}}</span>
                                                         </button>
                                                         <button type="reset" class="btn btn-warning cancel">
                                                             <i class="glyphicon glyphicon-ban-circle"></i>
-                                                            <span>{{__('jquery_upload.cancel_upload')}}</span>
+                                                            <span>{{__('Cancel upload')}}</span>
                                                         </button>
-                                                    {{--<button type="button" class="btn btn-danger delete">--}}
-                                                    {{--<i class="glyphicon glyphicon-trash"></i>--}}
-                                                    {{--<span>{{__('jquery_upload.delete')}}</span>--}}
-                                                    {{--</button>--}}
-                                                    {{--<input type="checkbox" class="toggle">--}}
-                                                    <!-- The global file processing state -->
+                                                        <button type="button" class="btn btn-danger delete">
+                                                            <i class="glyphicon glyphicon-trash"></i>
+                                                            <span>{{__('Delete')}}</span>
+                                                        </button>
+                                                        <input type="checkbox" class="toggle">
+                                                        <!-- The global file processing state -->
                                                         <span class="fileupload-process"></span>
                                                     </div>
                                                     <!-- The global progress state -->
@@ -84,17 +90,17 @@
                                             <br>
                                             <div class="panel panel-default">
                                                 <div class="panel-heading">
-                                                    <h3 class="panel-title">{{__('jquery_upload.notes')}}</h3>
+                                                    <h3 class="panel-title">{{__('Notes')}}</h3>
                                                 </div>
                                                 <div class="panel-body">
                                                     <ul>
-                                                        <li>{{__('jquery_upload.max_upload_size')}}
+                                                        <li>{{__('Max upload size')}}
                                                             <strong
                                                                 id="upload_max_filesize">{{ini_get('upload_max_filesize')}}</strong>.
                                                         </li>
-                                                        <li>{{__('jquery_upload.you_can')}}
-                                                            <strong>{{__('jquery_upload.drag')}}
-                                                                &amp; {{__('jquery_upload.drop')}}</strong> {{__('jquery_upload.drag_drop')}}
+                                                        <li>{{__('you can')}}
+                                                            <strong>{{__('Drag')}}
+                                                                &amp; {{__('Drop')}}</strong>
                                                         </li>
                                                     </ul>
                                                 </div>
@@ -129,9 +135,6 @@
                                         <p class="name">{%=file.name%}</p>
                                         <strong class="error text-danger"></strong>
                                     </td>
-                                    <td style="width:200px !important;">
-                                        <p><input style="width:100%;" type="text" value="{%=file.name%}" name="{%=x%}"></p>
-                                    </td>
                                     <td>
                                         <p class="size">Processing...</p>
                                         <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
@@ -154,6 +157,11 @@
                             {% } %}
 
 
+
+
+
+
+
                         </script>
                         <script id="template-download" type="text/x-tmpl">
 
@@ -161,15 +169,15 @@
                                 <tr class="template-download fade">
                                     <td>
                                         <span class="preview">
-                                            {% if (file.vimeo_thumbnail_url) { %}
-                                                <a href="{%=file.vimeo_url%}" title="{%=file.name%}" target="_blank" download="{%=file.name%}" data-gallery><img src="{%=file.vimeo_thumbnail_url%}"></a>
+                                            {% if (file.thumbnailUrl) { %}
+                                                <a href="{%=file.url%}" title="{%=file.name%}" target="_blank" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
                                             {% } %}
                                         </span>
                                     </td>
                                     <td>
                                         <p class="name">
-                                            {% if (file.vimeo_url) { %}
-                                                <a href="{%=file.vimeo_url%}" title="{%=file.name%}" target="_blank" download="{%=file.name%}" {%=file.vimeo_thumbnail_url?'data-gallery':''%}>{%=file.name%}</a>
+                                            {% if (file.url) { %}
+                                                <a href="{%=file.url%}" title="{%=file.name%}" target="_blank" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
                                             {% } else { %}
                                                 <span>{%=file.name%}</span>
                                             {% } %}
@@ -182,15 +190,30 @@
                                         <span class="size">{%=o.formatFileSize(file.size)%}</span>
                                     </td>
                                     <td>
-                                        {% if (!file.vimeo_delete_url) { %}
+                                        {% if (!file.url) { %}
                                             <button class="btn btn-warning cancel">
                                                 <i class="glyphicon glyphicon-ban-circle"></i>
                                                 <span>Cancel</span>
                                             </button>
                                         {% } %}
                                     </td>
+                                    <td>
+                                      {% if (file.deleteUrl) { %}
+                                          <button class="btn btn-danger delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}"{% if (file.deleteWithCredentials) { %} data-xhr-fields='{"withCredentials":true}'{% } %}>
+                                              <i class="glyphicon glyphicon-trash"></i>
+                                              <span>Delete</span>
+                                          </button>
+                                          <input type="checkbox" name="delete" value="1" class="toggle">
+                                      {% } else { %}
+                                          <button class="btn btn-warning cancel">
+                                              <i class="glyphicon glyphicon-ban-circle"></i>
+                                              <span>Cancel</span>
+                                          </button>
+                                      {% } %}
+                                  </td>
                                 </tr>
                             {% } %}
+
                         </script>
                     </div>
                 </div>
@@ -199,11 +222,16 @@
     </div>
 @endsection
 @section('js')
-    <script src="https://code.jquery.com/jquery-3.5.0.js" integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.5.0.js"
+            integrity="sha256-r/AaFHrszJtwpe+tHyNi/XCfMxYpbsRg2Uqn0x3s2zc=" crossorigin="anonymous"></script>
     <!-- Latest compiled and minified JavaScript -->
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-{{--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+            integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+    {{--    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>--}}
     <!-- The jQuery UI widget factory, can be omitted if jQuery UI is already included -->
     <script src="{{url('jQuery_File_Upload_10_13_1/js/vendor/jquery.ui.widget.js')}}"></script>
     <!-- The Templates plugin is included to render the upload/download listings -->
@@ -267,49 +295,21 @@
                     '/cors/result.html?%s'
                 )
             );
-
-            if (window.location.hostname === 'blueimp.github.io') {
-                //console.log('Demo');
-                // Demo settings:
-                $('#fileupload').fileupload('option', {
-                    url: "{{url('/')}}",
-                    // Enable image resizing, except for Android and Opera,
-                    // which actually support image resizing, but fail to
-                    // send Blob objects via XHR requests:
-                    disableImageResize: /Android(?!.*Chrome)|Opera/
-                        .test(window.navigator.userAgent),
-                    maxFileSize: 99999,
-                    acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
-                });
-                // Upload server status check for browsers with CORS support:
-                if ($.support.cors) {
-                    $.ajax({
-                        url: "{{url('/')}}",//'//jquery-file-upload.appspot.com/',
-                        type: 'HEAD'
-                    }).fail(function () {
-                        $('<div class="alert alert-danger"/>')
-                            .text('Upload server currently unavailable - ' +
-                                new Date())
-                            .appendTo('#fileupload');
-                    });
-                }
-            } else {
-                console.log('iam here');
-                // Load existing files:
-                $('#fileupload').addClass('fileupload-processing');
-                $.ajax({
-                    // Uncomment the following to send cross-domain cookies:
-                    //xhrFields: {withCredentials: true},
-                    url: $('#fileupload').fileupload('option', 'url'),
-                    dataType: 'json',
-                    context: $('#fileupload')[0]
-                }).always(function () {
-                    $(this).removeClass('fileupload-processing');
-                }).done(function (result) {
-                    $(this).fileupload('option', 'done')
-                        .call(this, $.Event('done'), {result: result});
-                });
-            }
+            // Load existing files:
+            $('#fileupload').addClass('fileupload-processing');
+            $.ajax({
+                // Uncomment the following to send cross-domain cookies:
+                //xhrFields: {withCredentials: true},
+                url: $('#fileupload').fileupload('option', 'url'),
+                dataType: 'json',
+                context: $('#fileupload')[0]
+            }).always(function () {
+                $(this).removeClass('fileupload-processing');
+            }).done(function (result) {
+                console.log(result)
+                $(this).fileupload('option', 'done')
+                    .call(this, $.Event('done'), {result: result});
+            });
         });
     </script>
     <!-- The XDomainRequest Transport is included for cross-domain file deletion for IE 8 and IE 9 -->

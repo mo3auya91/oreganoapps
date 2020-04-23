@@ -62,13 +62,13 @@
           addParamChar = /\?/.test(options.url) ? '&' : '?';
           // XDomainRequest only supports GET and POST:
           if (options.type === 'DELETE') {
-            options.url = options.url + addParamChar + '_method=DELETE';
+            options.url = options.url + addParamChar + '_method=DELETE' + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
             options.type = 'POST';
           } else if (options.type === 'PUT') {
-            options.url = options.url + addParamChar + '_method=PUT';
+            options.url = options.url + addParamChar + '_method=PUT' + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
             options.type = 'POST';
           } else if (options.type === 'PATCH') {
-            options.url = options.url + addParamChar + '_method=PATCH';
+            options.url = options.url + addParamChar + '_method=PATCH' + '_token='+document.head.querySelector('meta[name="csrf-token"]').content;
             options.type = 'POST';
           }
           // IE versions below IE8 cannot set the name property of
