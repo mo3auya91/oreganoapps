@@ -25,11 +25,6 @@
     },
     "dependencies": {
         "@fortawesome/fontawesome-free": "^5.13.0",
-        "blueimp-canvas-to-blob": "^3.20.0",
-        "blueimp-file-upload": "^10.13.1",
-        "blueimp-gallery": "^2.38.0",
-        "blueimp-load-image": "^3.0.0",
-        "blueimp-tmpl": "^3.14.0",
         "jquery-ui": "^1.12.1"
     }
 }
