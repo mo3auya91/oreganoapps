@@ -45,12 +45,14 @@ class CategoriesController extends Controller
             'type_id' => ['required', 'exists:types,id'],
             'title_ar' => ['required', 'string'],
             'title_en' => ['required', 'string'],
+            'order_number' => ['required', 'integer','min:1'],
             'icon' => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
             'icon_filled' => ['required', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
             'image' => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
         ]);
         $data = [
             'type_id' => $request->get('type_id'),
+            'order_number' => $request->get('order_number'),
             'title_ar' => $request->get('title_ar'),
             'title_en' => $request->get('title_en'),
             'icon' => str_replace('public/', 'storage/', $request->file('icon')->store('public/categories')),
@@ -99,11 +101,13 @@ class CategoriesController extends Controller
             'type_id' => ['required', 'exists:types,id'],
             'title_ar' => ['required', 'string'],
             'title_en' => ['required', 'string'],
+            'order_number' => ['required', 'integer','min:1'],
             'icon' => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
             'icon_filled' => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
             'image' => ['nullable', 'file', 'mimes:jpeg,jpg,png', 'max:' . max_upload_size()],
         ]);
         $data = [
+            'order_number' => $request->get('order_number'),
             'title_ar' => $request->get('title_ar'),
             'title_en' => $request->get('title_en'),
         ];

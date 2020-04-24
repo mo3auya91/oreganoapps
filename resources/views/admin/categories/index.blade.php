@@ -16,6 +16,7 @@
                         <thead>
                         <tr>
                             <th scope="col">#</th>
+                            <th scope="col"># Order</th>
                             <th scope="col">Title En</th>
                             <th scope="col">Type</th>
                             <th scope="col">Status</th>
@@ -30,13 +31,20 @@
                         @foreach($categories as $category)
                             <tr id="category-row-{{$category->id}}">
                                 <th scope="row">{{$category->id}}</th>
+                                <td>{{$category->order_number}}</td>
                                 <td>{{$category->title_en}}</td>
                                 <td>{{$category->type->title}}</td>
                                 <td>{{$category->status?'Active':'Inactive'}}</td>
                                 <td><img src="{{$category->icon}}" height="30" alt="{{$category->title_ar}}"></td>
                                 <td><img src="{{$category->icon_filled}}" height="30" alt="{{$category->title_en}}">
                                 </td>
-                                <td><img src="{{$category->image}}" height="30" alt="{{$category->title_en}}"></td>
+                                <td>
+                                    @if($category->image)
+                                        <img src="{{$category->image}}" height="30" alt="{{$category->title_en}}">
+                                    @else
+                                        -
+                                    @endif
+                                </td>
                                 <td>
                                     ({{$category->images_count}})
                                     <a href="{{route('categories.images.index',['category'=>$category->id])}}"

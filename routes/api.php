@@ -20,6 +20,7 @@ Route::prefix('v1/')->group(function () {
     if (!$type_slug) {
         $type = \App\Models\Type::query()->firstOrFail();
     }
+    abort_if(!$type, 404);
     Route::get('/', function () use ($type) {
         $images = \App\Models\Image::with('category')->whereHas('category', function ($query) use ($type) {
             $query->where('status', 1);
@@ -29,13 +30,16 @@ Route::prefix('v1/')->group(function () {
     });
 
     Route::get('/categories', function () use ($type) {
-        $categories = \App\Models\Category::query()->where('type_id', $type->id)->get();
+        $categories = \App\Models\Category::query()->where([
+            'status' => 1,
+            'type_id' => $type->id,
+        ])->orderBy('order_number', 'asc')->get();
         return api_response($categories, 'تمت العملية بنجاح', null);
     });
 
     Route::get('/categories/{category_id}/images', function ($category_id) use ($type) {
-        $category = $type->categories()->findOrFail($category_id);
-        $images = $category->images()->paginate(10);
+        $category = $type->categories()->where('status', 1)->findOrFail($category_id);
+        $images = $category->images()->orderByDesc('images.id')->paginate(10);
         return api_response($images, 'تمت العملية بنجاح', null);
     });
 });

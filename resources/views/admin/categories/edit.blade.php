@@ -30,6 +30,11 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label for="order_number">* # Order</label>
+                                <input type="number" class="form-control" id="order_number" name="order_number" required
+                                       value="{{old('order_number',$category->order_number)}}" min="1">
+                            </div>
+                            <div class="form-group">
                                 <label for="title_ar">* Title Ar</label>
                                 <input type="text" class="form-control" id="title_ar" name="title_ar" required
                                        value="{{old('title_ar',$category->title_ar)}}">
