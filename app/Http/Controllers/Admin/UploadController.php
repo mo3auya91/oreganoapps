@@ -54,14 +54,15 @@ class UploadController extends Controller
     //public function __construct($title,$status,$options = null, $initialize = true, $error_messages = null)
     public function __construct($category_id, $options = null, $initialize = true, $error_messages = null)
     {
-        //dd(storage_path('app/public/categories/' . $category_id . '/images/temp/'));
         $this->category_id = $category_id;
         $this->response = array();
-        $this->store_path = 'app/public/categories/' . $category_id . '/images/';
+        $this->store_path = 'app/public/categories/' . $category_id . '/';
         $this->upload_path = storage_path($this->store_path);
-        $this->thumb_upload_path = storage_path($this->store_path . '/thumb/');
+        $this->thumb_upload_path = $this->upload_path . 'thumbnail';
         $this->options = array(
-            'script_url' => url($this->upload_path . $this->get_server_var('SCRIPT_NAME')),
+            //'script_url' => url($this->upload_path . $this->get_server_var('SCRIPT_NAME')),
+            //'script_url' => url($this->upload_path),
+            'script_url' => $this->upload_path,
             'upload_dir' => $this->upload_path,
 //            'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')) . $this->upload_path,
             'upload_url' => $this->upload_path,
@@ -177,11 +178,11 @@ class UploadController extends Controller
 //                    'upload_dir' => dirname($this->get_server_var('SCRIPT_FILENAME')) . $this->thumb_upload_path,
 //                    'upload_url' => $this->get_full_url() . $this->thumb_upload_path,
                     'upload_dir' => $this->thumb_upload_path,
-                    'script_url' => url($this->thumb_upload_path . $this->get_server_var('SCRIPT_NAME')),
+                    //'script_url' => str_replace('app/public', 'storage', $this->store_path) . 'thumbnail/',
                     // Uncomment the following to force the max
                     // dimensions and e.g. create square thumbnails:
                     'auto_orient' => true,
-                    'crop' => true,
+                    'crop' => false,
                     'jpeg_quality' => 70,
                     'no_cache' => true, //(there's a caching option, but this remembers thumbnail sizes from a previous action!)
                     'strip' => true, //(this strips EXIF tags, such as geolocation)
@@ -300,6 +301,7 @@ class UploadController extends Controller
             }
             $version_path = rawurlencode($version) . '/';
         }
+        //return url(str_replace('app/public', 'storage', $this->store_path) . rawurlencode($file_name));
         return $this->options['upload_url'] . $this->get_user_path()
             . $version_path . rawurlencode($file_name);
     }
@@ -1173,8 +1175,8 @@ class UploadController extends Controller
                     $append_file ? FILE_APPEND : 0
                 );
             }
-            $my_file_name = str_replace('app/public', 'storage', $this->store_path) . '/' . $file->name;
-            $my_thumb_file_name = str_replace('app/public', 'storage', $this->store_path) . '/thumb/' . $file->name;
+            $my_file_name = str_replace('app/public', 'storage', $this->store_path) . $file->name;
+            $my_thumb_file_name = str_replace('app/public', 'storage', $this->store_path) . 'thumbnail/' . $file->name;
             $_image = Image::query()->create([
                 'category_id' => $this->category_id,
                 'image' => $my_file_name,
@@ -1183,6 +1185,7 @@ class UploadController extends Controller
             $file_size = $this->get_file_size($file_path, $append_file);
             if ($file_size === $file->size) {
                 $file->url = url($my_file_name);
+                //$file->url = $this->get_download_url($file->name);
                 if ($this->is_valid_image_file($file_path)) {
                     $this->handle_image_file($file_path, $file);
                 }
@@ -1194,8 +1197,8 @@ class UploadController extends Controller
                 }
             }
             $this->set_additional_file_properties($file);
-            $file->thumbnailUrl = url($my_thumb_file_name);
             $file->deleteUrl = route('categories.images.destroy', ['category' => $this->category_id, 'image' => $_image->id]);
+            $file->thumbnailUrl = url($my_thumb_file_name);
         }
         return $file;
     }
